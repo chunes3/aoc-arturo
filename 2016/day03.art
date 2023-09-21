@@ -1,0 +1,18 @@
+triangle?: $[a b c] -> all? @[c<a+b, b<a+c, a<b+c]
+
+input: read.lines « aoc-arturo/2016/day03.txt
+    | map => [to [:integer] match & {/\d+}]
+    | chop
+
+; part 1 -- by rows
+print ["By rows:" enumerate input 'x -> triangle? x\0 x\1 x\2]
+
+; part 2 -- by columns in triplets
+triangles: 0
+input | flatten
+      | loop [a b c d e f g h i][
+            'triangles + enumerate @[
+                @[a d g], @[b e h], @[c f i]
+            ] 'x -> triangle? x\0 x\1 x\2
+        ]
+print ["By columns:" triangles]

@@ -1,0 +1,40 @@
+; Advent of Code day 1
+; ---------------
+; Problem summary
+; ---------------
+; Given a list of instructions like "R5, L11, R3, ..." where R means turn
+; 90 degrees clockwise and L means turn 90 degrees counterclockwise, and
+; the following number means to travel that many blocks, determine how far
+; the last location is from where you started using manhattan distance.
+; Also determine how far away the first twice-visited location is from the
+; starting point.
+
+x: 0
+y: 0         ; your location
+heading: 0   ; direction you are facing in degrees
+visited: []  ; coordinates visited
+repeats: []  ; coordinates visited at least twice
+
+read « aoc-arturo/2016/day01.txt
+    | match {/\d+|R|L}
+    | loop [turn blocks] [
+          blocks: do blocks
+          'heading + ("R" = turn)? -> 90 -> neg 90
+          if 0 > heading -> heading: 270
+          'heading % 360
+          loop blocks => [
+              if in? @[x y] visited -> 'repeats ++ @[x y]
+              'visited ++ @[@[x y]]
+              case [heading]
+                  when? [=0] -> y: y - 1
+                  when? [=90] -> x: x + 1
+                  when? [=180] -> y: y + 1
+                  else -> x: x - 1
+          ]
+      ]
+
+print ["Easter Bunny HQ is" add abs x abs y "blocks away."]
+print [
+    "First repeat is"
+    add abs repeats\0 abs repeats\1 "blocks away."
+]

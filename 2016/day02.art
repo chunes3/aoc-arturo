@@ -1,0 +1,40 @@
+keypad1: split.lines {
+    00000
+    01230
+    04560
+    07890
+    00000
+}
+
+keypad2: split.lines {
+    0000000
+    0001000
+    0023400
+    0567890
+    00ABC00
+    000D000
+    0000000
+}
+
+vadd: $[a b] -> @[a\0+b\0, a\1+b\1]
+
+decipher: function [loc instr keypad][
+    loop instr 'command [
+        prev: loc
+        case [command]
+            when? [='U'] -> loc: vadd loc @[neg 1 0]
+            when? [='D'] -> loc: vadd loc [1 0]
+            when? [='L'] -> loc: vadd loc @[0 neg 1]
+            else -> loc: vadd loc [0 1]
+        if '0' = keypad\[loc\0]\[loc\1] -> loc: prev
+    ]
+    return keypad\[loc\0]\[loc\1]
+]
+
+input: chop read.lines « aoc-arturo/2016/day02.txt
+; part 1
+input | map => [decipher [2 2] & keypad1]
+      | print
+; part 2
+input | map => [decipher [3 1] & keypad2]
+      | print

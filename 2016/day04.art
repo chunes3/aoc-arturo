@@ -1,0 +1,35 @@
+extractId: $=> [do first match & {/\d+}]
+
+realRoom?: $=> [
+    x: chop split.by: {/[-\[\]]} &
+    histogram: tally join chop.times: 2 x
+    checksum: last x
+    arrange histogram [k v] -> add to :integer to :char k 1000000 * neg v
+        | map => first
+        | join
+        | take 5
+        | equal? checksum
+]
+
+decrypt: $ -> s [
+    n: extractId s
+    chop split.by: "-" s
+        | map => [join map & => [rot n &]]
+        | join.with: " "
+]
+
+rot: $ => [to :char 97 + mod & + sub to :integer to :char & 97 26]
+
+input: chop read.lines « aoc-arturo/2016/day04.txt
+
+; part 1
+input | select => realRoom?
+      | map => extractId
+      | sum
+      | print
+
+; part 2
+input | select => [in? "north" decrypt &]
+      | first
+      | extractId
+      | print

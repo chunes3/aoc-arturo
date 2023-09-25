@@ -1,0 +1,23 @@
+transpose: $ -> a [
+    cols: @.of: size a\0 ""
+    loop a => [
+        loop.with: 'i & => [cols\[i]: cols\[i] ++ &]
+    ]
+    cols   
+]
+
+input: read.lines "aoc-arturo/2016/day06.txt"
+
+; part 1
+input | chop
+      | transpose
+      | map => [first maximum tally & [k v] -> v]
+      | join
+      | print
+
+; part 2
+input | chop
+      | transpose
+      | map => [first minimum tally & [k v] -> v]
+      | join
+      | print

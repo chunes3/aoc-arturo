@@ -1,4 +1,4 @@
-transpose: $ -> a [
+transpose: $->a[
     cols: @.of: size a\0 ""
     loop a => [
         loop.with: 'i & => [cols\[i]: cols\[i] ++ &]
@@ -6,18 +6,11 @@ transpose: $ -> a [
     cols   
 ]
 
-input: read.lines "aoc-arturo/2016/day06.txt"
+decipher: $[s f][
+    print join map s 'c -> first call f @[tally c [k v] -> v]
+]
 
-; part 1
-input | chop
-      | transpose
-      | map => [first maximum tally & [k v] -> v]
-      | join
-      | print
+input: transpose chop read.lines "aoc-arturo/2016/day06.txt"
+decipher input 'maximum  ; part 1
+decipher input 'minimum  ; part 2
 
-; part 2
-input | chop
-      | transpose
-      | map => [first minimum tally & [k v] -> v]
-      | join
-      | print

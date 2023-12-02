@@ -1,15 +1,15 @@
 in: read.lines relative « 1
 
-;;; Part one ;;;
+;;;===--~ Part one ~--===;;;
 
 in | map => [match & {/\d}]
    | filter => empty?
    | map 'x -> do ~« |x\0||last x|
    | sum
-   | print  ; part one
+   | print
 
 
-;;;===--~ Part Two ~--===;;;
+;;;===--~ Part two ~--===;;;
 
 toNumeral: $ => [
     translate & #[

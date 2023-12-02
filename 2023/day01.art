@@ -37,6 +37,6 @@ backs: in | map => [match.once reverse & {/\d|enin|thgie|neves|xis|evif|ruof|eer
           | map => toNumeral
 
 0..sub size fronts 1
-  | map 'i -> do ~« |toNumeral fronts\[i]||backs\[i]|
+  | map 'i -> do ~« |fronts\[i]||backs\[i]|
   | sum
   | print

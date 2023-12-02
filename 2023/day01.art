@@ -26,15 +26,12 @@ toNumeral: $ => [
 ]
 
 fronts: in | map => [match.once & {/\d|one|two|three|four|five|six|seven|eight|nine}]
-           | filter => empty?
            | flatten
            | map => toNumeral
 
 backs: in | map => [match.once reverse & {/\d|enin|thgie|neves|xis|evif|ruof|eerht|owt|eno}]
-          | map => [map & => reverse]
-          | filter => empty?
           | flatten
-          | map => toNumeral
+          | map => [toNumeral reverse &]
 
 0..sub size fronts 1
   | map 'i -> do ~« |fronts\[i]||backs\[i]|

@@ -1,0 +1,42 @@
+in: read.lines relative « 1
+
+;;; Part one ;;;
+
+in | map => [match & {/\d}]
+   | filter => empty?
+   | map 'x -> do ~« |x\0||last x|
+   | sum
+   | print  ; part one
+
+
+;;;===--~ Part Two ~--===;;;
+
+toNumeral: $ => [
+    translate & #[
+        one: "1"
+        two: "2"
+        three: "3"
+        four: "4"
+        five: "5"
+        six: "6"
+        seven: "7"
+        eight: "8"
+        nine: "9"
+    ]    
+]
+
+fronts: in | map => [match.once & {/\d|one|two|three|four|five|six|seven|eight|nine}]
+           | filter => empty?
+           | flatten
+           | map => toNumeral
+
+backs: in | map => [match.once reverse & {/\d|enin|thgie|neves|xis|evif|ruof|eerht|owt|eno}]
+          | map => [map & => reverse]
+          | filter => empty?
+          | flatten
+          | map => toNumeral
+
+0..sub size fronts 1
+  | map 'i -> do ~« |toNumeral fronts\[i]||backs\[i]|
+  | sum
+  | print

@@ -1,0 +1,17 @@
+in: chop read.lines relative « 2
+
+value: $ => [index ["red" "green" "blue"] &]
+
+; part 1
+print ∑ map.with: 'i in 'x [
+    q: map drop match x {/\d+} => do
+    c: map match x {/red|green|blue} => [12 + value &]
+    * i + 1 ∏ map couple c q 'y -> (=< do y)? -> 1 -> 0
+]
+
+; part 2
+print ∑ map.with: 'i in 'x [
+    q: map drop match x {/\d+} => do
+    c: map match x {/red|green|blue} => value
+    ∏ map map values gather couple c q => first => [map & => last] => max
+]

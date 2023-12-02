@@ -10,7 +10,7 @@ print ∑ map.with: 'i in 'x [
 ]
 
 ; part 2
-print ∑ map.with: 'i in 'x [
+print ∑ map in 'x [
     q: map drop match x {/\d+} => do
     c: map match x {/red|green|blue} => value
     ∏ map map values gather couple c q => first => [map & => last] => max

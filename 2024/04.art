@@ -1,0 +1,27 @@
+input: chop read.lines ./"04.txt"
+
+dirs: (permutate.repeated.by:2 @[1 0 neg 1]) -- [[0 0]]
+xdirs: permutate.repeated.by:2 @[1 neg 1]
+xmasCount: 0
+xCount: 0
+
+loop.with: 'i input 'row [
+    loop.with: 'j row 'letter [
+        'xmasCount + enumerate dirs 'dir [
+            "XMAS" = join map 0..3 'offset [
+                x: j + dir\1 * offset
+                y: i + dir\0 * offset
+                switch and? x <=> 0 dec size input\0, y <=> 0 dec size input
+                    -> input\[y]\[x]
+                    -> ' '
+            ]
+        ]
+        unless and? i <=> 1 dec dec size input\0, j <=> 1 dec dec size input -> continue
+        if all? @[
+            in? input\[i-1]\[j-1] ++ letter ++ input\[i+1]\[j+1] ["MAS" "SAM"]
+            in? input\[i-1]\[j+1] ++ letter ++ input\[i+1]\[j-1] ["MAS" "SAM"]
+        ] -> 'xCount + 1
+    ]
+]
+print xmasCount
+print xCount
